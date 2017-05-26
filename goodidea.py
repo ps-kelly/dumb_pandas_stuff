@@ -50,7 +50,7 @@ def test_sloppy_vectorize():
         return dog * cat * count
     out = sloppy_vectorize(crappy_function, dframe, **test_kwargs)
     test_output = dframe['dog'] * dframe['cat'] * test_kwargs['count']
-    for i in range(0,len(out[0])):
+    for i in range(0, len(out[0])):
         assert out[0][i] == test_output[i]
     assert 'moose' in out[1]
     assert len(out[1]) == 1
