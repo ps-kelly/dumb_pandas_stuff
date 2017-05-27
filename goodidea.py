@@ -1,6 +1,6 @@
 #!/usr/bin/python
 """ this is an extremely good idea"""
-import pandas as pd
+import pandas as pd #technically just needed for tests
 import numpy as np
 
 def sloppy_vectorize(func, dframe, **kwargs):
@@ -9,14 +9,14 @@ def sloppy_vectorize(func, dframe, **kwargs):
     excludes all passed kwargs from vectorization while pushing any matches.
     returns a tuple of (return of vectorized, [unused cols],[bad kwargs])
     """
-    func_kwords = func.__code__.co_varnames
+    func_kwords = func.__code__.co_varnames[:func.__code__.co_argcount]
     kwords = {}
     unused_cols = []
-    for col_name in dframe.columns.values.tolist():
-        if col_name in func_kwords:
-            kwords[col_name] = dframe[col_name]
+    for k, val in dframe.to_dict('series').items():
+        if k in func_kwords:
+            kwords[k] = val
         else:
-            unused_cols.append(col_name)
+            unused_cols.append(k)
     excluded_kw = []
     bad_kwargs = []
     for key, value in kwargs.items():
